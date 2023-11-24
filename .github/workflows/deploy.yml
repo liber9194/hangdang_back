@@ -1,0 +1,42 @@
+name: Deploy to cloudtype
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: seayeux/rollingpaper
+          stage: main
+          yaml: >
+            name: hangdang-back
+
+            app: java@17
+
+            options:
+              ports: 8080
+              env:
+                - name: JWT_KEY
+                  value: Ltq1jLs/5nrp9Rsty9Fn5ybIKVNhJXUIhjvzUsqvGlo=
+                - name: SQL_URL
+                  value: jdbc:mysql://springboot-database.cxtd7wgq10kj.ap-northeast-2.rds.amazonaws.com:3306/db
+                - name: SQL_ID
+                  value: admin
+                - name: SQL_PASSWORD
+                  value: admin1234
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
