@@ -48,6 +48,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     runtimeOnly 'com.mysql:mysql-connector-j'
+//swagger 설정 추가
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
+
 }
 
 tasks.named('test') {
